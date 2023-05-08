@@ -1,8 +1,15 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+[levelupapi server-side code](https://github.com/AngieMGonzalez/levelup-server)
+
+[NSS Template](https://github.com/nashville-software-school/level-up-react-18-template)
+
 ## Available Scripts
 
 In the project directory, you can run:
+
+## `npm install` 
+## `npm install --save react react-do next`
 
 ### `npm start`
 
