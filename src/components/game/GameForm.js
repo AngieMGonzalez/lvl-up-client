@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react"
-import { useNavigate } from 'react-router-dom'
-import { createGame } from '../../managers/GameManager.js'
+import { useNavigate, useParams } from 'react-router-dom'
+import { createGame, getSingleGame, updateGame } from '../../managers/GameManager.js'
 import getAllGameTypes from "../../managers/GameTypeManager.js";
+import { Button, Form } from "react-bootstrap";
 
 
 
@@ -15,14 +16,27 @@ export const GameForm = () => {
         gameTypeId: 0
     };
 
-    const [currentGame, setCurrentGame] = useState(initialState)
     const [gameTypes, setGameTypes] = useState([])
+    const [currentGame, setCurrentGame] = useState(initialState)
     const navigate = useNavigate()
+    const { gameId } = useParams();
 
     useEffect(() => {
-        // TODO: Get the game types, then set the state
         getAllGameTypes().then(setGameTypes);
-    }, [])
+        if (gameId) {
+            getSingleGame(gameId).then((gameObj) => {
+                const gameType = gameObj.game_type;
+                setCurrentGame((prevState) => ({
+                    ...prevState,
+                    skillLevel: gameObj.skill_level,
+                    numberOfPlayers: gameObj.number_of_players,
+                    title: gameObj.title,
+                    maker: gameObj.maker,
+                    gameTypeId: gameType
+                }));
+            })
+        }
+    }, [gameId])
 
     const changeGameState = (domEvent) => {
         // TODO: Complete the onChange function
@@ -34,8 +48,8 @@ export const GameForm = () => {
     }
 
     return (
-        <form className="gameForm">
-            <h2 className="gameForm__title">Register New Game</h2>
+        <Form className="gameForm">
+            <h2 className="gameForm__title">{gameId ? 'Edit' : 'Register New'} Game</h2>
             <fieldset>
                 <div className="form-group">
                     <label htmlFor="title">Title: </label>
@@ -81,12 +95,12 @@ export const GameForm = () => {
             <fieldset>
                 <div className="form-group">
                     <label htmlFor="gameTypeId">Type of Game: </label>
-                    <select name="gameTypeId" onChange={changeGameState}>
-                        <option value="0">Select a Game Type</option>
+                    <select name="gameTypeId" onChange={changeGameState} value={currentGame.gameTypeId}>
+                        <option value="">Select a Game Type</option>
                         {gameTypes.map((gameType) => (
                             <option 
-                            key={gameType.id} 
-                            value={gameType.id}
+                                key={gameType.id} 
+                                value={gameType.id}
                             >
                             {gameType.label}
                             </option>
@@ -95,12 +109,12 @@ export const GameForm = () => {
                 </div>
             </fieldset>
 
-            <button type="submit"
+            <Button type="submit"
                 onClick={evt => {
                     // Prevent form from being submitted
-                    evt.preventDefault()
+                    evt.preventDefault();
 
-                    const game = {
+                    let gameObj = {
                         maker: currentGame.maker,
                         title: currentGame.title,
                         number_of_players: parseInt(currentGame.numberOfPlayers),
@@ -108,11 +122,19 @@ export const GameForm = () => {
                         game_type: parseInt(currentGame.gameTypeId)
                     }
 
+                    if (gameId) {
+                        const payload = {
+                            ...gameObj,
+                            id: gameId
+                        };
+                        updateGame(payload).then(() => navigate("/games"));
+                    } else {
+                        const game = gameObj
+                        createGame(game).then(() => navigate("/games"))
+                    }
                     // Send POST request to your API
-                    createGame(game)
-                        .then(() => navigate("/games"))
                 }}
-                className="btn btn-primary">Create</button>
-        </form>
+                className="btn btn-primary">{gameId ? 'Edit' : 'Create'} Game</Button>
+        </Form>
     )
 }

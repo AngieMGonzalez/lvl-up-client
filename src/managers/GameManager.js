@@ -34,4 +34,24 @@ const getGameTypes = (id) => {
         .then(response => response.json())
 }
 
-export { getGames, createGame, getGameTypes }
+const getSingleGame = (id) => {
+    return fetch(`http://localhost:8000/games/${id}`, {
+        method: 'GET',
+        headers:{
+            "Authorization": token
+        }
+    })
+        .then(response => response.json())
+}
+
+const updateGame = (game) => {
+    return fetch(`http://localhost:8000/games/${game.id}`, {
+        method: 'PUT',
+        headers:{
+            "Content-Type": "application/json",
+            "Authorization": token
+        }, body: JSON.stringify(game)
+    })
+}
+
+export { getGames, createGame, getGameTypes, getSingleGame, updateGame }
