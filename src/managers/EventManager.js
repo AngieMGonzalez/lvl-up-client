@@ -42,4 +42,14 @@ const createEvent = (game) => {
         .then(response => response.json())
 }
 
-export { getEvents, getSingleEvent, getEventsByGameId, createEvent }
+const updateEvent = (event) => {
+    return fetch(`http://localhost:8000/events/${event.id}`, {
+        method: 'PUT',
+        headers:{
+            "Content-Type": "application/json",
+            "Authorization": token
+        }, body: JSON.stringify(event)
+    })
+}
+
+export { getEvents, getSingleEvent, getEventsByGameId, createEvent, updateEvent }

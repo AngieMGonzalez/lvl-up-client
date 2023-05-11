@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react"
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { getGames } from "../../managers/GameManager";
-import { createEvent } from "../../managers/EventManager";
+import { createEvent, getSingleEvent, updateEvent } from "../../managers/EventManager";
+import { Button } from "react-bootstrap";
 // import getAllGamers from "../../managers/GamersManager";
 
-export const EventForm = () => {
+export default function EventForm () {
   /* Since the input fields are bound to the values of the properties of this state variable, you need to provide some default values. */
     const initialState = {
         description: "",
@@ -19,11 +20,29 @@ export const EventForm = () => {
     // const [host, setHost] = useState([])
     const navigate = useNavigate()
 
+    //used retrieve the dynamic route parameters from the URL in the rendered component
+    const { eventId } = useParams();
+    // returns an object containing key-value pair
+    // like like router.query in nextjs
+
     useEffect(() => {
         // TODO: Get all games, then set the state
         getGames().then(setGames);
         // getAllGamers().then(setHost);
-    }, [])
+        if (eventId) {
+          getSingleEvent(eventId).then((eventObj) => {
+            //const game = eventObj.game.id;
+            console.warn('game', eventObj.game.id);
+            setFormInput((prevState) => ({
+              ...prevState,
+              description: eventObj.description,
+              date: eventObj.date,
+              time: eventObj.time,
+              gameId: eventObj.game.id
+            }));
+          })
+        }
+    }, [eventId])
 
     const changeEventState = (domEvent) => {
         // the onChange function
@@ -43,9 +62,9 @@ export const EventForm = () => {
     // }
 
     const handleSubmit = (evt) => {
-      evt.preventDefault()
+      evt.preventDefault();
 
-      const event = {
+      let formObj = {
           description: formInput.description,
           date: formInput.date,
           time: formInput.time,
@@ -53,9 +72,18 @@ export const EventForm = () => {
           // ,host: parseInt(formInput.hostId)
       }
 
+      if (eventId) {
+        const payload = {
+          ...formObj,
+          id: eventId
+        };
+        updateEvent(payload).then(() => navigate("/events"));
+        } else {
+          const event = formObj
       // Send POST request to your API
       createEvent(event)
           .then(() => navigate("/events"))
+      }
     }
 
     return (
@@ -95,8 +123,8 @@ export const EventForm = () => {
             <fieldset>
                 <div className="form-group">
                     <label htmlFor="gameId">What Game: </label>
-                    <select name="gameId" onChange={changeEventState}>
-                      <option value="0">Select Game</option>
+                    <select name="gameId" onChange={changeEventState} value={formInput.gameId}>
+                      <option value="">Select Game</option>
                       {games.map((game) => (
                         <option 
                           key={game.id} 
@@ -126,7 +154,7 @@ export const EventForm = () => {
                 </div>
             </fieldset> */}
 
-            <button type="submit" className="btn btn-primary">Create</button>
+            <Button type="submit" className="btn btn-primary">{eventId ? 'Edit' : 'Create'} Event</Button>
         </form>
     )
 }

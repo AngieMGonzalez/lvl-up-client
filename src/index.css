@@ -2,6 +2,8 @@
 /*Typography
 --------------------------------------------------------------*/
 
+/* Bootstrap CSS */
+
 body, button, input, select, textarea {
     color: #404040;
     font-family: "Comfortaa", Arial, sans-serif;
