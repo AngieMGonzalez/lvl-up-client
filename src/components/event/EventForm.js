@@ -31,14 +31,13 @@ export default function EventForm () {
         // getAllGamers().then(setHost);
         if (eventId) {
           getSingleEvent(eventId).then((eventObj) => {
-            //const game = eventObj.game.id;
-            console.warn('game', eventObj.game.id);
+            const game = eventObj.game.id;
             setFormInput((prevState) => ({
               ...prevState,
               description: eventObj.description,
               date: eventObj.date,
               time: eventObj.time,
-              gameId: eventObj.game.id
+              gameId: game
             }));
           })
         }
@@ -88,7 +87,7 @@ export default function EventForm () {
 
     return (
         <form className="gameForm" onSubmit={handleSubmit}>
-            <h2 className="gameForm__title">Register New Event</h2>
+            <h2 className="gameForm__title">{eventId ? 'Edit' : 'Register New'} Event</h2>
             <fieldset>
                 <div className="form-group">
                     <label htmlFor="description">Description: </label>

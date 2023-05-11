@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react"
 import { getGames } from "../../managers/GameManager.js"
 import { useNavigate } from 'react-router-dom'
+import GameCard from "./GameCard.js"
+import { Button } from "react-bootstrap"
 
 export const GameList = (props) => {
     const [ games, setGames ] = useState([])
@@ -10,23 +12,21 @@ export const GameList = (props) => {
         getGames().then(data => setGames(data))
     }, [])
 
+    const clickEvent = () => {
+        navigate({ pathname: "/games/new" });
+    }
+
     return (
-        <article className="games">
-            <h1>List of Games:</h1>
-            <button className="btn btn-2 btn-sep icon-create"
-                onClick={() => {
-                    navigate({ pathname: "/games/new" });
-                }}
-            >Register New Game 🎲</button>
-            {games.map(game => {
-                    return <section key={`game--${game.id}`} className="game">
-                        <div className="game__title">{game.title} by {game.maker}</div>
-                        <div className="game__players">{game.number_of_players} players needed</div>
-                        <div className="game__skillLevel">Skill level is {game.skill_level}</div>
-                        <br/>
-                    </section>
-                })
-            }
-        </article>
+        <>
+            <article className="games">
+                <h1>List of Games 🎲:</h1>
+                <Button className="btn btn-2 btn-sep icon-create" onClick={clickEvent}>
+                    Register New Game 🎲
+                </Button>
+                {games.map((game) => (
+                    <GameCard key={game.id} game={game} />
+                ))}
+            </article>
+        </>
     )
 }
