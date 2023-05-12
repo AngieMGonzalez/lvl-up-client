@@ -18,7 +18,7 @@ export const GameForm = () => {
 
     const [gameTypes, setGameTypes] = useState([])
     const [currentGame, setCurrentGame] = useState(initialState)
-    const navigate = useNavigate()
+    const navigate = useNavigate();
     const { gameId } = useParams();
 
     useEffect(() => {

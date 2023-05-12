@@ -1,6 +1,13 @@
 import { Card } from "react-bootstrap";
+import { deleteGame } from "../../managers/GameManager";
 
-export default function GameCard({game}) {
+export default function GameCard({game, onUpdate}) {
+
+  const handleDelete = () => {
+    if (window.confirm(`🛑 You wanna delete game?`)) {
+      deleteGame(game.id).then(() => onUpdate());
+    }
+  };
 
   return (
     <>
@@ -12,6 +19,7 @@ export default function GameCard({game}) {
             <Card.Title>Skill level from 1 to 5: {game.skill_level}</Card.Title>
             <Card.Body>
               <Card.Link href={`/edit_game/${game.id}`}>Edit</Card.Link>
+              <Card.Link href="#" onClick={handleDelete}>Delete</Card.Link>
             </Card.Body>
         </Card.Body>
       </Card>
