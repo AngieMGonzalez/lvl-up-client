@@ -8,8 +8,12 @@ export const GameList = (props) => {
     const [ games, setGames ] = useState([])
     const navigate = useNavigate()
 
-    useEffect(() => {
+    const getAllTheGames = () => {
         getGames().then(data => setGames(data))
+    }
+
+    useEffect(() => {
+        getAllTheGames();
     }, [])
 
     const clickEvent = () => {
@@ -24,7 +28,7 @@ export const GameList = (props) => {
                     Register New Game 🎲
                 </Button>
                 {games.map((game) => (
-                    <GameCard key={game.id} game={game} />
+                    <GameCard key={game.id} game={game} onUpdate={getAllTheGames} />
                 ))}
             </article>
         </>

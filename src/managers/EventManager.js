@@ -52,4 +52,13 @@ const updateEvent = (event) => {
     })
 }
 
-export { getEvents, getSingleEvent, getEventsByGameId, createEvent, updateEvent }
+const deleteEvent = (id) => {
+    return fetch(`http://localhost:8000/events/${id}`, {
+        method: 'DELETE',
+        headers:{
+            "Authorization": token
+        }
+    })
+}
+
+export { getEvents, getSingleEvent, getEventsByGameId, createEvent, updateEvent, deleteEvent }

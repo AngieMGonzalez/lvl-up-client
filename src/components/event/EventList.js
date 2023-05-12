@@ -8,9 +8,12 @@ export const EventList = (props) => {
     const [ events, setEvents ] = useState([])
     const navigate = useNavigate()
 
+    const getAllTheEvents = () => {
+        getEvents().then(setEvents);
+    };
 
     useEffect(() => {
-        getEvents().then(data => setEvents(data))
+        getAllTheEvents();
     }, [])
 
     const clickEvent = () => {
@@ -20,13 +23,13 @@ export const EventList = (props) => {
     return (
         <>
             <article className="events">
-                <h1>List of events:</h1>
+                <h1>List of Events:</h1>
                 <Button className="btn btn-2 btn-sep icon-create" onClick={clickEvent}>
                     Register New Event
                 </Button>
                 <div className="d-flex flex-wrap justify-content-center"></div>
                 {events.map((event) => (
-                    <EventCard key={event.id} event={event} />
+                    <EventCard key={event.id} event={event} onUpdate={getAllTheEvents} />
                 ))}
             </article>
         </>

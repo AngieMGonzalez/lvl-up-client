@@ -54,4 +54,13 @@ const updateGame = (game) => {
     })
 }
 
-export { getGames, createGame, getGameTypes, getSingleGame, updateGame }
+const deleteGame = (id) => {
+    return fetch(`http://localhost:8000/games/${id}`, {
+        method: 'DELETE',
+        headers:{
+            "Authorization": token
+        }
+    })
+}
+
+export { getGames, createGame, getGameTypes, getSingleGame, updateGame, deleteGame }

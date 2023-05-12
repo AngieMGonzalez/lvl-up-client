@@ -1,6 +1,13 @@
 import { Card } from "react-bootstrap";
+import { deleteEvent } from "../../managers/EventManager";
 
-export default function EventCard({event}) {
+export default function EventCard({event, onUpdate}) {
+
+  const handleDelete = () => {
+    if (window.confirm(`🛑 You wanna delete event?`)) {
+      deleteEvent(event.id).then(() => onUpdate());
+    }
+  };
 
 // fix this in server later... w/o pulling depth=2
   return (
@@ -15,6 +22,7 @@ export default function EventCard({event}) {
             <Card.Title>Attendees: {event.attendees}</Card.Title>
             <Card.Body>
               <Card.Link href={`/edit_event/${event.id}`}>Edit</Card.Link>
+              <Card.Link href="#" onClick={handleDelete}>Delete</Card.Link>
             </Card.Body>
         </Card.Body>
       </Card>
