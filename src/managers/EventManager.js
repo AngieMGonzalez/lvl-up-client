@@ -61,4 +61,26 @@ const deleteEvent = (id) => {
     })
 }
 
-export { getEvents, getSingleEvent, getEventsByGameId, createEvent, updateEvent, deleteEvent }
+const leaveEvent = (id) => {
+    return fetch(`http://localhost:8000/events/${id}/leave`, {
+        method: 'DELETE',
+        headers:{
+            "Authorization": token
+        }
+    })
+}
+
+const joinEvent = (id) => new Promise((resolve, reject) => {
+    fetch(`http://localhost:8000/events/${id}/signup`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: token
+        },
+    })
+        .then((response) => response.json())
+        .then((data) => resolve(data))
+        .catch(reject);
+});
+
+export { getEvents, getSingleEvent, getEventsByGameId, createEvent, updateEvent, deleteEvent, leaveEvent, joinEvent }
