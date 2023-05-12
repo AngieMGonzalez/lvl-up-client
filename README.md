@@ -73,3 +73,14 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/de
 ### `npm build` fails to minify
 
 This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+
+
+## Ternary Statement
+- Vocabulary: `condition ? what happens if true : what happens if false` is called a ternary statement in JavaScript. It's a condensed version of an `if..else` block of code that you can use in JSX, because interpolation only supports a single JavaScript statement.
+```
+{
+  event.joined ?
+    <Button className="btn-danger" onClick={leave}>Leave</Button>
+    : <Button className="btn-success" onClick={signup}>Sign Up</Button>
+}
+```
