@@ -113,13 +113,13 @@ export const GameForm = () => {
                 onClick={evt => {
                     // Prevent form from being submitted
                     evt.preventDefault();
-
+                    // this is create and update
                     let gameObj = {
                         maker: currentGame.maker,
                         title: currentGame.title,
-                        number_of_players: parseInt(currentGame.numberOfPlayers),
-                        skill_level: parseInt(currentGame.skillLevel),
-                        game_type: parseInt(currentGame.gameTypeId)
+                        numberOfPlayers: parseInt(currentGame.numberOfPlayers),
+                        skillLevel: parseInt(currentGame.skillLevel),
+                        gameTypeId: parseInt(currentGame.gameTypeId)
                     }
 
                     if (gameId) {

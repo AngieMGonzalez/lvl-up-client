@@ -27,7 +27,7 @@ export default function EventCard({event, onUpdate}) {
             <Card.Title>When: {event.date}</Card.Title>
             <Card.Title>At: {event.time}</Card.Title>
             <Card.Title>We're playing: {event.game.title}</Card.Title>
-            <Card.Title>Attendees: {event.attendees}</Card.Title>
+            <Card.Title>Attendees: {event.attendees?.bio}</Card.Title>
             <Card.Body>
               <Card.Link href={`/edit_event/${event.id}`}>Edit</Card.Link>
               <Card.Link href="#" onClick={handleDelete}>Delete</Card.Link>

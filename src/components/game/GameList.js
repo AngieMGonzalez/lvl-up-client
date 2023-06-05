@@ -10,6 +10,11 @@ export const GameList = (props) => {
 
     const getAllTheGames = () => {
         getGames().then(data => setGames(data))
+        // data = {
+        //    key: value pairs
+        //    gameTypeId: data.game_type
+        //     
+        //  }
     }
 
     useEffect(() => {
